@@ -165,4 +165,15 @@ public class MicroBatchingLibrary<T> {
             throw new IllegalArgumentException("Batch frequency must be a positive value in milliseconds");
         }
     }
+
+    private void processRemainingJobs() {
+        while (!jobQueue.isEmpty() || !batch.isEmpty()) {
+            jobQueue.drainTo(batch, batchSize - batch.size());
+            if (!batch.isEmpty()) {
+                batchProcessor.processBatch(new ArrayList<>(batch));
+                batch.clear();
+            }
+        }
+    }
+
 }
