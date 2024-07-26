@@ -1,10 +1,12 @@
 package com.microbatch.usage;
 
 import java.util.List;
-
 import com.microbatch.BatchProcessor;
 import com.microbatch.MicroBatchingLibrary;
 
+/**
+ * Example usage of the MicroBatchingLibrary.
+ */
 public class MicroBatchingLibraryExample {
 
     public static void main(String[] args) throws InterruptedException {

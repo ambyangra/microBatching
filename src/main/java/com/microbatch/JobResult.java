@@ -1,5 +1,10 @@
 package com.microbatch;
 
+/**
+ * Class representing the result of a job submission.
+ *
+ * @param <T> the type of job
+ */
 public class JobResult<T> {
     private final boolean accepted;
 
