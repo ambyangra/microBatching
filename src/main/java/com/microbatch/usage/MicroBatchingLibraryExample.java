@@ -3,17 +3,14 @@ package com.microbatch.usage;
 import java.util.List;
 
 import com.microbatch.BatchProcessor;
-import com.microbatch.JobResult;
 import com.microbatch.MicroBatchingLibrary;
 
 public class MicroBatchingLibraryExample {
-    
+
     public static void main(String[] args) throws InterruptedException {
-        // Create a BatchProcessor implementation
         BatchProcessor<String> batchProcessor = new BatchProcessor<>() {
             @Override
             public void processBatch(List<String> batch) {
-                // Implement the batch processing logic here
                 System.out.println("Processing batch: " + batch);
             }
         };
@@ -21,27 +18,37 @@ public class MicroBatchingLibraryExample {
         // Create the MicroBatchingLibrary instance
         MicroBatchingLibrary<String> library = new MicroBatchingLibrary<>(batchProcessor, 5, 1000);
 
-        // Submit jobs to the library
-        JobResult<String> result1 = library.submitJob("Job 1");
-        JobResult<String> result2 = library.submitJob("Job 2");
-        JobResult<String> result3 = library.submitJob("Job 3");
-        JobResult<String> result4 = library.submitJob("Job 4");
-        JobResult<String> result5 = library.submitJob("Job 5");
-        JobResult<String> result6 = library.submitJob("Job 6");
+        var initialBatchSize = library.getBatchSize();
+        System.out.println("initialBatchSize: " + initialBatchSize);
 
-        // Check the results
-        System.out.println("Job 1 accepted: " + result1.isAccepted());
-        System.out.println("Job 2 accepted: " + result2.isAccepted());
-        System.out.println("Job 3 accepted: " + result3.isAccepted());
-        System.out.println("Job 4 accepted: " + result4.isAccepted());
-        System.out.println("Job 5 accepted: " + result5.isAccepted());
-        System.out.println("Job 6 accepted: " + result6.isAccepted());
+        var initialFrequency = library.getBatchFrequencyMs();
+        System.out.println("initialFrequency: " + initialFrequency);
+
+        // Submit jobs to the library
+        library.submitJob("Job 1");
+        library.submitJob("Job 2");
+        library.submitJob("Job 3");
+        library.submitJob("Job 4");
+        library.submitJob("Job 5");
+        library.submitJob("Job 6");
 
         // Update the batch size
         library.setBatchSize(3);
 
+        System.out.println("updated batch size: " + library.getBatchSize());
+
         // Update the batch frequency
         library.setBatchFrequencyMs(500);
+
+        System.out.println("updated batch frequency: " + library.getBatchFrequencyMs());
+
+        // Submit jobs to the library
+        library.submitJob("Job 7");
+        library.submitJob("Job 8");
+        library.submitJob("Job 9");
+        library.submitJob("Job 10");
+        library.submitJob("Job 11");
+        library.submitJob("Job 12");
 
         // Shutdown the library
         library.shutdown();
