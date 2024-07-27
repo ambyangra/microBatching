@@ -17,45 +17,54 @@ processing frequency, and ensures that all submitted jobs are processed before s
 
 Clone the repository:
 
+```
 bash
 git clone <https://github.com/ambyangra/microbatching.git>
 cd microbatching
+```
 
 ### Code Example
 
 Here is an example usage of the MicroBatching library:
-
+```
 java
-public static void main(String[] args) {
-microbatching.BatchProcessor<String> processor = batch -> {
-System.out.println("Processing batch: " + batch);
-};
+package microbatching;
 
-    microbatching.MicroBatchingLibrary<String> library = new microbatching.MicroBatchingLibrary<>(processor, 5, 1000);
+public class TestExamle {
 
-    for (int i = 1; i <= 12; i++) {
-        library.submitJob("Job " + i);
+    public static void main(String[] args) {
+        microbatching.BatchProcessor<String> processor = batch -> {
+            System.out.println("Processing batch: " + batch);
+        };
+
+        microbatching.MicroBatchingLibrary<String> library = new MicroBatchingLibrary<>(processor, 5, 1000);
+
+        for (int i = 1; i <= 12; i++) {
+            library.submitJob("Job " + i);
+            try {
+                // Simulate varying submission times
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
+        // Adjust batch size and frequency after initial submissions
+        library.setBatchSize(3);
+        library.setBatchFrequencyMs(500);
+
         try {
-            // Simulate varying submission times
-            Thread.sleep(200);
+            // Allow some time for processing
+            Thread.sleep(5000);
+            library.shutdown();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+
     }
-
-    // Adjust batch size and frequency after initial submissions
-    library.setBatchSize(3);
-    library.setBatchFrequencyMs(500);
-
-    try {
-        // Allow some time for processing
-        Thread.sleep(5000);
-        library.shutdown();
-    } catch (InterruptedException e) {
-        Thread.currentThread().interrupt();
-    }
-
 }
+```
+An example usage class, `MicroBatchingLibraryExample`, is also provided in `src/main/microbatching/usage`
 
 ### Classes
 
@@ -101,9 +110,9 @@ Class representing the result of a job submission.
 *Constructor:*
 
 java
-public microbatching.JobResult(boolean success)
+public microbatching.JobResult(boolean accepted)
 
-- success: Indicates whether the job submission was successful.
+- accepted: Indicates whether the job submission was successful.
 
 *Methods:*
 
