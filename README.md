@@ -6,8 +6,8 @@ processing frequency, and ensures that all submitted jobs are processed before s
 
 ## Features
 
-- Submit individual jobs and receive a java.microbatching.JobResult.
-- Process accepted jobs in batches using a provided java.microbatching.BatchProcessor.
+- Submit individual jobs and receive a microbatching.JobResult.
+- Process accepted jobs in batches using a provided microbatching.BatchProcessor.
 - Configurable batch size and frequency.
 - Graceful shutdown to ensure all previously accepted jobs are processed.
 
@@ -27,11 +27,11 @@ Here is an example usage of the MicroBatching library:
 
 java
 public static void main(String[] args) {
-java.microbatching.BatchProcessor<String> processor = batch -> {
+microbatching.BatchProcessor<String> processor = batch -> {
 System.out.println("Processing batch: " + batch);
 };
 
-    java.microbatching.MicroBatchingLibrary<String> library = new java.microbatching.MicroBatchingLibrary<>(processor, 5, 1000);
+    microbatching.MicroBatchingLibrary<String> library = new microbatching.MicroBatchingLibrary<>(processor, 5, 1000);
 
     for (int i = 1; i <= 12; i++) {
         library.submitJob("Job " + i);
@@ -59,14 +59,14 @@ System.out.println("Processing batch: " + batch);
 
 ### Classes
 
-#### java.microbatching.MicroBatchingLibrary
+#### microbatching.MicroBatchingLibrary
 
 A micro-batching library that groups individual tasks into small batches for processing.
 
 *Constructor:*
 
 java
-public java.microbatching.MicroBatchingLibrary(java.microbatching.BatchProcessor<T> batchProcessor, int batchSize, long
+public microbatching.MicroBatchingLibrary(microbatching.BatchProcessor<T> batchProcessor, int batchSize, long
 batchFrequencyMs)
 
 - batchProcessor: The batch processor to process batches of jobs.
@@ -75,7 +75,7 @@ batchFrequencyMs)
 
 *Methods:*
 
-- java.microbatching.JobResult<T> submitJob(T job): Submits a job to the micro-batching library.
+- microbatching.JobResult<T> submitJob(T job): Submits a job to the micro-batching library.
 - void setBatchSize(int batchSize): Sets the batch size.
 - int getBatchSize(): Gets the current batch size.
 - void setBatchFrequencyMs(long batchFrequencyMs): Sets the batch frequency.
@@ -83,7 +83,7 @@ batchFrequencyMs)
 - void shutdown() throws InterruptedException: Shuts down the micro-batching library, ensuring all previously accepted
   jobs are processed before returning.
 
-#### java.microbatching.BatchProcessor
+#### microbatching.BatchProcessor
 
 Interface for processing batches of jobs.
 
@@ -94,17 +94,17 @@ void processBatch(List<T> batch)
 
 - batch: The batch of jobs to be processed.
 
-#### java.microbatching.JobResult
+#### microbatching.JobResult
 
 Class representing the result of a job submission.
 
 *Constructor:*
 
 java
-public java.microbatching.JobResult(boolean success)
+public microbatching.JobResult(boolean success)
 
 - success: Indicates whether the job submission was successful.
 
 *Methods:*
 
-- boolean isSuccess(): Returns whether the job submission was successful.
+- boolean isAccepted(): Returns whether the job submission was successful.
