@@ -53,7 +53,7 @@ public class MicroBatchingLibrary<T> {
             return new JobResult<>(false);
         }
         boolean accepted = jobQueue.offer(job);
-        System.out.println("jobResult for Job: " + job.toString() + " is: " + accepted);
+        System.out.println("Job: " + job.toString() + " is: " + accepted);
         if (accepted) {
             startLatch.countDown(); // Allow the processing thread to start processing
         }
