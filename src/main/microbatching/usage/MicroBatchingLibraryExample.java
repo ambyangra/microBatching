@@ -1,8 +1,10 @@
-package com.microbatch.usage;
+package microbatching.usage;
 
 import java.util.List;
-import com.microbatch.BatchProcessor;
-import com.microbatch.MicroBatchingLibrary;
+
+import microbatching.BatchProcessor;
+import microbatching.MicroBatchingLibrary;
+
 
 /**
  * Example usage of the MicroBatchingLibrary.
@@ -17,7 +19,7 @@ public class MicroBatchingLibraryExample {
             }
         };
 
-        // Create the MicroBatchingLibrary instance
+        // Create the java.microbatching.MicroBatchingLibrary instance
         MicroBatchingLibrary<String> library = new MicroBatchingLibrary<>(batchProcessor, 5, 1000);
 
         var initialBatchSize = library.getBatchSize();
@@ -26,31 +28,39 @@ public class MicroBatchingLibraryExample {
         var initialFrequency = library.getBatchFrequencyMs();
         System.out.println("initialFrequency: " + initialFrequency);
 
-        // Submit jobs to the library
-        library.submitJob("Job 1");
-        library.submitJob("Job 2");
-        library.submitJob("Job 3");
-        library.submitJob("Job 4");
-        library.submitJob("Job 5");
-        library.submitJob("Job 6");
+        // Submit initial set of jobs to the library
+        for (int i = 1; i <= 6; i++) {
+            library.submitJob("Job " + i);
+        }
 
         // Update the batch size
         library.setBatchSize(3);
-
         System.out.println("updated batch size: " + library.getBatchSize());
 
         // Update the batch frequency
         library.setBatchFrequencyMs(500);
-
         System.out.println("updated batch frequency: " + library.getBatchFrequencyMs());
 
-        // Submit jobs to the library
-        library.submitJob("Job 7");
-        library.submitJob("Job 8");
-        library.submitJob("Job 9");
-        library.submitJob("Job 10");
-        library.submitJob("Job 11");
-        library.submitJob("Job 12");
+        // Submit more jobs to the library
+        for (int i = 7; i <= 20; i++) {
+            library.submitJob("Job " + i);
+        }
+
+        // Allow some time for processing
+        Thread.sleep(2000);
+
+        // Submit even more jobs to the library
+        for (int i = 21; i <= 30; i++) {
+            library.submitJob("Job " + i);
+        }
+
+        // Allow some time for processing
+        Thread.sleep(2000);
+
+        // Submit additional jobs to test further
+        for (int i = 31; i <= 50; i++) {
+            library.submitJob("Job " + i);
+        }
 
         // Shutdown the library
         library.shutdown();

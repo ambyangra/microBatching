@@ -1,4 +1,4 @@
-package com.microbatch;
+package microbatching;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,14 +8,14 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A micro-batching library that groups individual tasks into small batches
- * for processing. The library allows for configurable batch size and
- * processing frequency, and ensures that all submitted jobs are processed
- * before shutdown.
+ * A micro-batching library that groups individual tasks into small batches for
+ * processing. The library allows for configurable batch size and processing
+ * frequency, and ensures that all submitted jobs are processed before shutdown.
  *
  * @param <T> the type of jobs to be processed
  */
 public class MicroBatchingLibrary<T> {
+
     private final BatchProcessor<T> batchProcessor;
     private volatile int batchSize;
     private volatile long batchFrequencyMs;
@@ -29,8 +29,8 @@ public class MicroBatchingLibrary<T> {
      * Constructs a new MicroBatchingLibrary with the specified batch processor,
      * batch size, and batch frequency.
      *
-     * @param batchProcessor   the batch processor to process batches of jobs
-     * @param batchSize        the size of each batch
+     * @param batchProcessor the batch processor to process batches of jobs
+     * @param batchSize the size of each batch
      * @param batchFrequencyMs the frequency in milliseconds to process batches
      */
     public MicroBatchingLibrary(BatchProcessor<T> batchProcessor, int batchSize, long batchFrequencyMs) {
@@ -101,8 +101,8 @@ public class MicroBatchingLibrary<T> {
     }
 
     /**
-     * Shuts down the micro-batching library, ensuring all previously accepted jobs
-     * are processed before returning.
+     * Shuts down the micro-batching library, ensuring all previously accepted
+     * jobs are processed before returning.
      *
      * @throws InterruptedException if the shutdown process is interrupted
      */
@@ -115,12 +115,6 @@ public class MicroBatchingLibrary<T> {
         }
 
         // Process any remaining jobs in the queue
-        while (!jobQueue.isEmpty() || !batch.isEmpty()) {
-            processBatch();
-        }
-        if (batchProcessingThread != null) {
-            batchProcessingThread.join();
-        }
         processRemainingJobs();
     }
 
@@ -157,15 +151,6 @@ public class MicroBatchingLibrary<T> {
         }
     }
 
-    private void validateUserInput(int batchSize, long batchFrequencyMs) {
-        if (batchSize <= 0) {
-            throw new IllegalArgumentException("Batch size must be a positive integer");
-        }
-        if (batchFrequencyMs <= 0) {
-            throw new IllegalArgumentException("Batch frequency must be a positive value in milliseconds");
-        }
-    }
-
     private void processRemainingJobs() {
         while (!jobQueue.isEmpty() || !batch.isEmpty()) {
             jobQueue.drainTo(batch, batchSize - batch.size());
@@ -176,4 +161,12 @@ public class MicroBatchingLibrary<T> {
         }
     }
 
+    private void validateUserInput(int batchSize, long batchFrequencyMs) {
+        if (batchSize <= 0) {
+            throw new IllegalArgumentException("Batch size must be a positive integer");
+        }
+        if (batchFrequencyMs <= 0) {
+            throw new IllegalArgumentException("Batch frequency must be a positive value in milliseconds");
+        }
+    }
 }

@@ -1,4 +1,4 @@
-package com.microbatch;
+package microbatching;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.microbatch;
+package microbatching;
 
 /**
  * Class representing the result of a job submission.
