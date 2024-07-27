@@ -1,9 +1,9 @@
 package microbatching.usage;
 
-import java.util.List;
-
 import microbatching.BatchProcessor;
 import microbatching.MicroBatchingLibrary;
+
+import java.util.List;
 
 
 /**

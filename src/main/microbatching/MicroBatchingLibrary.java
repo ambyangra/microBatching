@@ -17,20 +17,20 @@ import java.util.concurrent.TimeUnit;
 public class MicroBatchingLibrary<T> {
 
     private final BatchProcessor<T> batchProcessor;
-    private volatile int batchSize;
-    private volatile long batchFrequencyMs;
     private final BlockingQueue<T> jobQueue;
-    private volatile boolean isShutdown = false;
-    private Thread batchProcessingThread;
     private final CountDownLatch startLatch = new CountDownLatch(1);
     private final List<T> batch = new ArrayList<>();
+    private volatile int batchSize;
+    private volatile long batchFrequencyMs;
+    private volatile boolean isShutdown = false;
+    private Thread batchProcessingThread;
 
     /**
      * Constructs a new MicroBatchingLibrary with the specified batch processor,
      * batch size, and batch frequency.
      *
-     * @param batchProcessor the batch processor to process batches of jobs
-     * @param batchSize the size of each batch
+     * @param batchProcessor   the batch processor to process batches of jobs
+     * @param batchSize        the size of each batch
      * @param batchFrequencyMs the frequency in milliseconds to process batches
      */
     public MicroBatchingLibrary(BatchProcessor<T> batchProcessor, int batchSize, long batchFrequencyMs) {
@@ -61,6 +61,15 @@ public class MicroBatchingLibrary<T> {
     }
 
     /**
+     * Gets the batch size.
+     *
+     * @return the current batch size
+     */
+    public int getBatchSize() {
+        return this.batchSize;
+    }
+
+    /**
      * Sets the batch size.
      *
      * @param batchSize the new batch size
@@ -72,12 +81,12 @@ public class MicroBatchingLibrary<T> {
     }
 
     /**
-     * Gets the batch size.
+     * Gets the batch frequency.
      *
-     * @return the current batch size
+     * @return the current batch frequency in milliseconds
      */
-    public int getBatchSize() {
-        return this.batchSize;
+    public long getBatchFrequencyMs() {
+        return this.batchFrequencyMs;
     }
 
     /**
@@ -89,15 +98,6 @@ public class MicroBatchingLibrary<T> {
         validateUserInput(this.batchSize, batchFrequencyMs);
         System.out.println("Batch frequency updated to: " + batchFrequencyMs + " ms");
         this.batchFrequencyMs = batchFrequencyMs;
-    }
-
-    /**
-     * Gets the batch frequency.
-     *
-     * @return the current batch frequency in milliseconds
-     */
-    public long getBatchFrequencyMs() {
-        return this.batchFrequencyMs;
     }
 
     /**
